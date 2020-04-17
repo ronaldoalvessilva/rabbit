@@ -47,7 +47,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
     String tipoOperacao = "População";
     //HORÁRIO DE EXECUÇÃO
-    int pHORAS = 5;
+    int pHORAS = 00;
     int pMINUTOS = 1;
     int pSEGUNDOS = 0;
     String nameUser = "ADMINISTRADOR DO SISTEMA";
