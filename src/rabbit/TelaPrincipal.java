@@ -90,8 +90,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
                     int selectedOption = JOptionPane.showConfirmDialog(null, "Deseja realmente sair do Sistema?", "Sistema informa:", JOptionPane.YES_NO_OPTION);
                     if (selectedOption == JOptionPane.YES_OPTION) {
                         System.exit(0);
-                    } else {
-                        System.exit(0);
                     }
                 }
             }
@@ -153,7 +151,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("...::: População Diária :::...");
+        setTitle("...::: Rabbit - População Alimentação :::...");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
 
