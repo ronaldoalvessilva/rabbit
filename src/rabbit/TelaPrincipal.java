@@ -111,19 +111,23 @@ public class TelaPrincipal extends javax.swing.JDialog {
     }
 
     public void pesquisar() {
-        listaRegistroES.selecionarRegistroEntrada(objEntradaSaida);
-        Date data = new Date();
-        String hora = formatter.format(data);
-        objEntradaSaida.setDataMovimento(data);
-        objEntradaSaida.setHorarioMovimento(hora);
-        objEntradaSaida.setTipoOperacao(tipoOperacao);
-        objEntradaSaida.setPopulacao(objEntradaSaida.getPopulacao());
-        objEntradaSaida.setUsuarioInsert(nameUser);
-        objEntradaSaida.setDataInsert(jDataSistema.getText());
-        objEntradaSaida.setHorarioInsert(jHoraSistema.getText());
-        populacao.incluirEntradaSaidaPopulacao(objEntradaSaida);
-        //CONVERTER AS DADOS NA TABELA        
-        converteData.alterarDataEntradasSaidasUnidades(objAtividade);
+        if (pHORAS == 00 && pMINUTOS == 1) {
+            System.out.println("Iniciado Rabbit.");
+            listaRegistroES.selecionarRegistroEntrada(objEntradaSaida);
+            Date data = new Date();
+            String hora = formatter.format(data);
+            objEntradaSaida.setDataMovimento(data);
+            objEntradaSaida.setHorarioMovimento(hora);
+            objEntradaSaida.setTipoOperacao(tipoOperacao);
+            objEntradaSaida.setPopulacao(objEntradaSaida.getPopulacao());
+            objEntradaSaida.setUsuarioInsert(nameUser);
+            objEntradaSaida.setDataInsert(jDataSistema.getText());
+            objEntradaSaida.setHorarioInsert(jHoraSistema.getText());
+            populacao.incluirEntradaSaidaPopulacao(objEntradaSaida);
+            //CONVERTER AS DADOS NA TABELA        
+            converteData.alterarDataEntradasSaidasUnidades(objAtividade);
+            System.out.println("População foi gerada com sucesso.");
+        }
     }
 
     /**
