@@ -25,7 +25,9 @@ public class ControleEntradasSaidasPopulacaoInternos {
     public EntradaSaidasPolucaoInternos incluirEntradaSaidaPopulacao(EntradaSaidasPolucaoInternos objEntradaSaida) {
 
         conecta.abrirConexao();
+        
         try {
+            //conecta.con.setAutoCommit(true);
             PreparedStatement pst = conecta.con.prepareStatement("INSERT INTO ENTRADAS_SAIDAS_POPULACAO_INTERNOS (DataMovimento,HorarioMovimento,TipoOperacao,Populacao,UsuarioInsert,DataInsert,HorarioInsert) VALUES(?,?,?,?,?,?,?)");
             pst.setTimestamp(1, new java.sql.Timestamp(objEntradaSaida.getDataMovimento().getTime()));
             pst.setString(2, objEntradaSaida.getHorarioMovimento());

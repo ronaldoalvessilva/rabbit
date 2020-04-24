@@ -42,13 +42,14 @@ public class TelaPrincipal extends javax.swing.JDialog {
     ListagemRegistroEntradaSaidaPopulcao listaRegistroES = new ListagemRegistroEntradaSaidaPopulcao();
     ConversaoDatasAtividadesUnidades converteData = new ConversaoDatasAtividadesUnidades();
     AtividadesMensalRealizadaUnidades objAtividade = new AtividadesMensalRealizadaUnidades();
+
     //
     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss"); // HORAIO DE 24 HORAS, PARA O DE 12 HORAS UTILIZAR hh:mm:ss
     SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
     String tipoOperacao = "População";
     //HORÁRIO DE EXECUÇÃO
-    int pHORAS = 00;
-    int pMINUTOS = 1;
+    int pHORAS = 20;
+    int pMINUTOS = 02;
     int pSEGUNDOS = 0;
     String nameUser = "ADMINISTRADOR DO SISTEMA";
 
@@ -64,7 +65,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         initComponents();
         corCampos();
-        threadHoraPopulcao();
+       threadHoraPopulcao2();
+         //threadHoraPopulcao();
         // Modificar a tecla tab por enter
         HashSet conj = new HashSet(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
@@ -111,23 +113,21 @@ public class TelaPrincipal extends javax.swing.JDialog {
     }
 
     public void pesquisar() {
-        if (pHORAS == 00 && pMINUTOS == 1) {
-            System.out.println("Iniciado Rabbit.");
-            listaRegistroES.selecionarRegistroEntrada(objEntradaSaida);
-            Date data = new Date();
-            String hora = formatter.format(data);
-            objEntradaSaida.setDataMovimento(data);
-            objEntradaSaida.setHorarioMovimento(hora);
-            objEntradaSaida.setTipoOperacao(tipoOperacao);
-            objEntradaSaida.setPopulacao(objEntradaSaida.getPopulacao());
-            objEntradaSaida.setUsuarioInsert(nameUser);
-            objEntradaSaida.setDataInsert(jDataSistema.getText());
-            objEntradaSaida.setHorarioInsert(jHoraSistema.getText());
-            populacao.incluirEntradaSaidaPopulacao(objEntradaSaida);
-            //CONVERTER AS DADOS NA TABELA        
-            converteData.alterarDataEntradasSaidasUnidades(objAtividade);
-            System.out.println("População foi gerada com sucesso.");
-        }
+        System.out.println("Iniciado Rabbit.");
+        listaRegistroES.selecionarRegistroEntrada(objEntradaSaida);
+        Date data = new Date();
+        String hora = formatter.format(data);
+        objEntradaSaida.setDataMovimento(data);
+        objEntradaSaida.setHorarioMovimento(hora);
+        objEntradaSaida.setTipoOperacao(tipoOperacao);
+        objEntradaSaida.setPopulacao(objEntradaSaida.getPopulacao());
+        objEntradaSaida.setUsuarioInsert(nameUser);
+        objEntradaSaida.setDataInsert(jDataSistema.getText());
+        objEntradaSaida.setHorarioInsert(jHoraSistema.getText());
+        populacao.incluirEntradaSaidaPopulacao(objEntradaSaida);
+        //CONVERTER AS DADOS NA TABELA        
+        converteData.alterarDataEntradasSaidasUnidades(objAtividade);
+        System.out.println("População foi gerada com sucesso.");
     }
 
     /**
@@ -421,20 +421,43 @@ public class TelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     // End of variables declaration//GEN-END:variables
 
-    public void threadHoraPopulcao() {
-        java.util.Timer timer = new java.util.Timer();
-        //Get the Date corresponding to 11:01:00 pm today.
+//    public void threadHoraPopulcao() {
+//        java.util.Timer timer = new java.util.Timer();
+//        //Get the Date corresponding to 11:01:00 pm today.
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
+//        calendar.set(Calendar.MINUTE, pMINUTOS);
+//        calendar.set(Calendar.SECOND, pSEGUNDOS);
+//        Date time = calendar.getTime();
+//
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                pesquisar();
+//                System.out.println("Teste Agendador");
+//            }
+//        }, time);
+//    }
+    public void threadHoraPopulcao2() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
         calendar.set(Calendar.MINUTE, pMINUTOS);
         calendar.set(Calendar.SECOND, pSEGUNDOS);
+
         Date time = calendar.getTime();
 
-        timer = new Timer();
+        final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                if( pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()){
                 pesquisar();
+               timer.cancel();
+               System.out.println("Teste Agendador");
+                }else{
+                    System.out.println("População não lancada");
+                }
             }
         }, time);
     }
