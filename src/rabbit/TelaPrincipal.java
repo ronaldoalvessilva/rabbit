@@ -48,8 +48,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
     SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
     String tipoOperacao = "População";
     //HORÁRIO DE EXECUÇÃO
-    int pHORAS = 20;
-    int pMINUTOS = 02;
+    int pHORAS = 00;
+    int pMINUTOS = 1;
     int pSEGUNDOS = 0;
     String nameUser = "ADMINISTRADOR DO SISTEMA";
 
@@ -65,8 +65,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         initComponents();
         corCampos();
-       threadHoraPopulcao2();
-         //threadHoraPopulcao();
+        threadHoraPopulcao();
         // Modificar a tecla tab por enter
         HashSet conj = new HashSet(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
@@ -208,7 +207,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jDataSistema)
                     .addComponent(jLabel3))
@@ -345,10 +344,10 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -421,25 +420,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     // End of variables declaration//GEN-END:variables
 
-//    public void threadHoraPopulcao() {
-//        java.util.Timer timer = new java.util.Timer();
-//        //Get the Date corresponding to 11:01:00 pm today.
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
-//        calendar.set(Calendar.MINUTE, pMINUTOS);
-//        calendar.set(Calendar.SECOND, pSEGUNDOS);
-//        Date time = calendar.getTime();
-//
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                pesquisar();
-//                System.out.println("Teste Agendador");
-//            }
-//        }, time);
-//    }
-    public void threadHoraPopulcao2() {
+    public void threadHoraPopulcao() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
         calendar.set(Calendar.MINUTE, pMINUTOS);
@@ -451,11 +432,11 @@ public class TelaPrincipal extends javax.swing.JDialog {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if( pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()){
-                pesquisar();
-               timer.cancel();
-               System.out.println("Teste Agendador");
-                }else{
+                if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
+                    pesquisar();
+                    timer.cancel();
+                    System.out.println("Finalizado Agendador");
+                } else {
                     System.out.println("População não lancada");
                 }
             }
