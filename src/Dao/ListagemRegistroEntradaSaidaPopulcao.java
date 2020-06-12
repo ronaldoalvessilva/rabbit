@@ -11,7 +11,6 @@ package Dao;
 import Factory.ConexaoBancoDados;
 import Modelo.EntradaSaidasPolucaoInternos;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,12 +25,11 @@ public class ListagemRegistroEntradaSaidaPopulcao {
 
         conecta.abrirConexao();
         try {
-            conecta.executaSQL("SELECT IdDocumento,Populacao, "
+            conecta.executaSQL("SELECT IdRegistro,Populacao, "
                     + "DataMovimento,HorarioMovimento,Quantidade "
                     + "FROM ENTRADAS_SAIDAS_POPULACAO_INTERNOS ");
-//                    + "WHERE IdDocumento='" + jIdLanc.getText() + "'");
             conecta.rs.last();
-//            objEntradaSaida.setIdDocumento(conecta.rs.getInt("IdDocumento"));
+            objEntradaSaida.setIdDocumento(conecta.rs.getInt("IdRegistro"));
             objEntradaSaida.setDataMovimento(conecta.rs.getDate("DataMovimento"));
             objEntradaSaida.setHorarioMovimento(conecta.rs.getString("HorarioMovimento"));
             objEntradaSaida.setPopulacao(conecta.rs.getInt("Populacao"));

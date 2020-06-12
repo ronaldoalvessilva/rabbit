@@ -295,7 +295,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="cc" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="A execu&#xe7;&#xe3;o est&#xe1; programada para as 00:01 hs da manh&#xe3; todos"/>
+            <Property name="text" type="java.lang.String" value="A execu&#xe7;&#xe3;o est&#xe1; programada para as 00:11 hs da manh&#xe3; todos"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">

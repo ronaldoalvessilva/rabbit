@@ -17,12 +17,16 @@ import java.awt.Color;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -49,9 +53,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
     String tipoOperacao = "População";
     //HORÁRIO DE EXECUÇÃO
     int pHORAS = 00;
-    int pMINUTOS = 1;
+    int pMINUTOS = 11;
     int pSEGUNDOS = 0;
-    String nameUser = "ADMINISTRADOR DO SISTEMA";
+    String nameUser = "ADMINISTRADOR DO SISTEMA";    
 
     /**
      * Creates new form TelaPrincipal
@@ -129,6 +133,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         converteData.alterarDataEntradasSaidasUnidades(objAtividade);
         System.out.println("População foi gerada com sucesso.");
         jTerminoOperacao.setText("População gerada com sucesso em Data: " + jDataSistema.getText() + " as: " + jHoraSistema.getText());
+        //GRAVAR NO ARQUIVO TEXTO
+        LOG_Mensagens();
     }
 
     /**
@@ -251,7 +257,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel5.setText("A execução está programada para as 00:01 hs da manhã todos");
+        jLabel5.setText("A execução está programada para as 00:11 hs da manhã todos");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
@@ -518,7 +524,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                     timer.cancel();
                     System.out.println("Finalizado Agendador");
                 } else {
-                    System.out.println("População não lancada");
+                    System.out.println("População não lançada");
                 }
             }
         }, time);
@@ -529,5 +535,25 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jHoraSistema.setBackground(Color.white);
         jInicioOperacao.setBackground(Color.white);
         jTerminoOperacao.setBackground(Color.white);
+    }
+
+    //GRAVAR LOG DO ROBÔ
+    public void LOG_Mensagens() {
+        try {
+            PrintWriter arq = new PrintWriter("C:\\SysConp\\Rabbit\\LOG\\" + "LOG_" + objEntradaSaida.getIdDocumento() + ".txt");
+            arq.println(jInicioOperacao.getText()); 
+            arq.println(jTerminoOperacao.getText());
+            arq.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //LER O CONTEUDO DO ARQUVIO
+//        try {
+//            BufferedReader arq = new BufferedReader(new FileReader("C:\\SysConp\\Rabbit\\LOG\\logRabbit.txt"));
+//            jInicioOperacao.setText(arq.readLine());
+//            jTerminoOperacao.setText(arq.readLine());
+//            arq.close();
+//        } catch (Exception e) {
+//        }
     }
 }
