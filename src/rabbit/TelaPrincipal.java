@@ -83,9 +83,18 @@ public class TelaPrincipal extends javax.swing.JDialog {
             @Override
             public void run() {
                 rodaRelogio();
+                cronometroJava();
             }
         };
         threadRelogio.start();
+        Thread crono = new Thread() {
+            @Override
+            public void run() {
+
+                cronometroJava();
+            }
+        };
+        crono.start();
         Date data = new Date();
         String hora = formatter.format(data); // Data da conexão
         String date = formatter2.format(data); // Hora da conexão
@@ -106,6 +115,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     }
 
     public void rodaRelogio() {
+
         try {
             while (true) {
                 Date data = new Date();
@@ -113,6 +123,17 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 String date = formatter2.format(data);
                 jHoraSistema.setText(String.valueOf(hora));    // no lugar do label, por seu JTextField    
                 jDataSistema.setText(String.valueOf(date));
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException ex) {
+        }
+    }
+
+    public void cronometroJava() {
+        try {
+            while (true) {
+
+                Cronometro();
                 Thread.sleep(1000);
             }
         } catch (InterruptedException ex) {
@@ -136,7 +157,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         //CONVERTER AS DADOS NA TABELA        
         converteData.alterarDataEntradasSaidasUnidades(objAtividade);
         System.out.println("População foi gerada com sucesso.");
-        jTerminoOperacao.setText("População gerada com sucesso na Data: " + jDataSistema.getText() + " as: " + jHoraSistema.getText());
+        jTerminoOperacao.setText("População gerada com sucesso em: " + jDataSistema.getText() + " as: " + jHoraSistema.getText());
         //GRAVAR NO ARQUIVO TEXTO
         LOG_Mensagens();
     }
@@ -152,6 +173,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jTempoExecucao = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -179,9 +201,16 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(204, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("FAVOR NÃO FECHAR A APLICAÇÃO");
+        jLabel1.setText("TEMPO DE EXECUÇÃO:");
+
+        jTempoExecucao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jTempoExecucao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        jTempoExecucao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTempoExecucao.setToolTipText("Tempo de execução da aplicação");
+        jTempoExecucao.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTempoExecucao.setEnabled(false);
+        jTempoExecucao.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -189,14 +218,18 @@ public class TelaPrincipal extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTempoExecucao)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTempoExecucao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -224,8 +257,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jDataSistema)
                     .addComponent(jLabel3))
@@ -233,7 +266,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jHoraSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +294,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel5.setText("A execução está programada para as 00:01 hs da manhã todos");
+        jLabel5.setText("A execução está programada para as 14:01 hs da manhã todos");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
@@ -329,7 +362,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,7 +412,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jTerminoOperacao.setForeground(new java.awt.Color(0, 102, 0));
         jTerminoOperacao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         jTerminoOperacao.setDisabledTextColor(new java.awt.Color(0, 102, 0));
-        jTerminoOperacao.setEnabled(false);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -408,18 +441,18 @@ public class TelaPrincipal extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -511,9 +544,11 @@ public class TelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JFormattedTextField jTempoExecucao;
     private javax.swing.JTextField jTerminoOperacao;
     // End of variables declaration//GEN-END:variables
 
+    //THREAD DE EXECUÇÃO DA TAREFA
     public void threadHoraPopulcao() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
@@ -541,11 +576,13 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }, time);
     }
 
+    // COR DOS CAMPOS
     public void corCampos() {
         jDataSistema.setBackground(Color.white);
         jHoraSistema.setBackground(Color.white);
         jInicioOperacao.setBackground(Color.white);
         jTerminoOperacao.setBackground(Color.white);
+        jTempoExecucao.setBackground(Color.white);
     }
 
     //GRAVAR LOG DO ROBÔ
@@ -560,6 +597,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
     }
 
+    //LOG DE ERRO CASO O APRESENTE
     public void LOG_ERROR() {
         try {
             PrintWriter arq = new PrintWriter("C:\\SysConp\\Rabbit\\LOG\\" + "LOG_ERROR" + objEntradaSaida.getIdDocumento() + ".txt");
@@ -570,6 +608,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
     }
 
+    //LOG DE FINALIZADO A EXECUÇÃO
     public void LOG_FINALIZADO() {
         try {
             PrintWriter arq = new PrintWriter("C:\\SysConp\\Rabbit\\LOG\\" + "LOG_FINAL" + objEntradaSaida.getIdDocumento() + ".txt");
@@ -588,6 +627,34 @@ public class TelaPrincipal extends javax.swing.JDialog {
             jTerminoOperacao.setText(arq.readLine());
             arq.close();
         } catch (Exception e) {
+        }
+    }
+    
+    //CRONOMETRO DE TEMPO DE EXECUÇÃO
+    public void Cronometro() {
+        int hor = 0, min = 0, seg = 0;
+        try {
+            jTempoExecucao.setText("0" + hor + ":" + "0" + min + ":" + seg);
+            System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
+            for (hor = 0; hor >= 0; hor++) {
+                for (min = 0; min >= 0; min++) {
+                    for (seg = 00; seg >= 0; seg++) {
+                        if (seg == 60) {
+                            min = min + 1;
+                            seg = 0;
+                        }
+                        if (min == 60) {
+                            hor = hor + 1;
+                            min = 0;
+                        }
+                        Thread.sleep(1000);
+                        jTempoExecucao.setText("0" + hor + ":" + "0" + min + ":" + seg);
+                        System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
