@@ -60,6 +60,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     String nameUser = "ADMINISTRADOR DO SISTEMA";
     //
     String pMENSAGEM_ERRO = "";
+    public static final long TEMPO = (1000 * 60);
 
     /**
      * Creates new form TelaPrincipal
@@ -73,7 +74,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         initComponents();
         corCampos();
-        threadHoraPopulcao();
+//        threadHoraPopulcao();
+        Thread_HORARIO_POPULACAO();
         // Modificar a tecla tab por enter
         HashSet conj = new HashSet(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
@@ -294,7 +296,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel5.setText("A execução está programada para as 14:01 hs da manhã todos");
+        jLabel5.setText("A execução está programada para as 00:01 hs da manhã todos");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
@@ -412,6 +414,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jTerminoOperacao.setForeground(new java.awt.Color(0, 102, 0));
         jTerminoOperacao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         jTerminoOperacao.setDisabledTextColor(new java.awt.Color(0, 102, 0));
+        jTerminoOperacao.setEnabled(false);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -443,16 +446,15 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -629,7 +631,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         } catch (Exception e) {
         }
     }
-    
+
     //CRONOMETRO DE TEMPO DE EXECUÇÃO
     public void Cronometro() {
         int hor = 0, min = 0, seg = 0;
@@ -655,6 +657,38 @@ public class TelaPrincipal extends javax.swing.JDialog {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Thread_HORARIO_POPULACAO() {
+        // atualiza o site a cada 1 minuto 
+        //****INICIA A TAREFA E VERIFICA A CADA UM MINUTO****
+        Timer timer = null;
+        if (timer == null) {
+            timer = new Timer();
+            TimerTask tarefa = new TimerTask() {
+                public void run() {
+                    while (true) {
+                        try {
+                            if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
+                                pesquisar();
+                                System.out.println("Finalizado Agendador");
+                                pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+                                LOG_FINALIZADO();
+                            } else {
+                                System.out.println("População não lançada");
+                                pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
+                                LOG_ERROR();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
+                            LOG_ERROR();
+                        }
+                    }
+                }
+            };
+            timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
         }
     }
 }
