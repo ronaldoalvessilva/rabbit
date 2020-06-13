@@ -74,7 +74,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         initComponents();
         corCampos();
-        threadHoraPopulcao();
+        threadHoraPopulacao();
 //        Thread_HORARIO_POPULACAO();
         // Modificar a tecla tab por enter
         HashSet conj = new HashSet(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -539,7 +539,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     //THREAD DE EXECUÇÃO DA TAREFA
-    public void threadHoraPopulcao() {
+    public void threadHoraPopulacao() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
         calendar.set(Calendar.MINUTE, pMINUTOS);
@@ -551,6 +551,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                //ADICIONADO O TRY CATH SOMENTE PARA TESTAR
+                try {
                     if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
                         pesquisar();
                         timer.cancel();
@@ -562,7 +564,12 @@ public class TelaPrincipal extends javax.swing.JDialog {
                         pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
                         LOG_ERROR();
                     }
+                } catch (Exception ERROR) {
+                    ERROR.printStackTrace();
+                    pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
+                    LOG_ERROR();
                 }
+            }
         }, time);
     }
 
@@ -625,7 +632,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         int hor = 0, min = 0, seg = 0;
         try {
             jTempoExecucao.setText("0" + hor + ":" + "0" + min + ":" + seg);
-            System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
+//            System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
             for (hor = 0; hor >= 0; hor++) {
                 for (min = 0; min >= 0; min++) {
                     for (seg = 00; seg >= 0; seg++) {
@@ -639,7 +646,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                         }
                         Thread.sleep(1000);
                         jTempoExecucao.setText("0" + hor + ":" + "0" + min + ":" + seg);
-                        System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
+//                        System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
                     }
                 }
             }
@@ -657,18 +664,22 @@ public class TelaPrincipal extends javax.swing.JDialog {
             TimerTask tarefa = new TimerTask() {
                 public void run() {
 //                    while (true) {
-                        try {
-                            if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
-                                pesquisar();
-                                System.out.println("Finalizado Agendador");
-                                pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-                                LOG_FINALIZADO();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    try {
+                        if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes() && pSEGUNDOS == new Date().getSeconds()) {
+                            pesquisar();
+                            System.out.println("Finalizado Agendador");
+                            pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+                            LOG_FINALIZADO();
+                        } else {
+                            System.out.println("População não lançada");
                             pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
                             LOG_ERROR();
                         }
+                    } catch (Exception ERROR) {
+                        ERROR.printStackTrace();
+                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
+                        LOG_ERROR();
+                    }
 //                    }
                 }
             };
