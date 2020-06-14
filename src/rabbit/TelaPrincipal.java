@@ -54,13 +54,13 @@ public class TelaPrincipal extends javax.swing.JDialog {
     SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
     String tipoOperacao = "População";
     //HORÁRIO DE EXECUÇÃO
-    int pHORAS = 00;
+    int pHORAS = 24;
     int pMINUTOS = 1;
     int pSEGUNDOS = 0;
     String nameUser = "ADMINISTRADOR DO SISTEMA";
     //
     String pMENSAGEM_ERRO = "";
-    public static final long TEMPO = (1000 * 60);
+//    public static final long TEMPO = (1000 * 60);
 
     /**
      * Creates new form TelaPrincipal
@@ -74,7 +74,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         initComponents();
         corCampos();
-        threadHoraPopulacao();
+        Thread_GERAR_POPULACAO GERAR_pop = new Thread_GERAR_POPULACAO();
+        GERAR_pop.executa_ROBO();
+//        threadHoraPopulacao();
 //        Thread_HORARIO_POPULACAO();
         // Modificar a tecla tab por enter
         HashSet conj = new HashSet(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -288,7 +290,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel6.setText("os dias.");
+        jLabel6.setText("os dias.            ");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -299,8 +301,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(23, 23, 23))
         );
         jPanel3Layout.setVerticalGroup(
@@ -314,7 +316,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addComponent(jLabel5)
                 .addGap(2, 2, 2)
                 .addComponent(jLabel6)
-                .addContainerGap())
+                .addGap(7, 7, 7))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
@@ -655,35 +657,73 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
     }
 
-    public void Thread_HORARIO_POPULACAO() {
-        // atualiza o site a cada 1 minuto 
-        //****INICIA A TAREFA E VERIFICA A CADA UM MINUTO****
-        Timer timer = null;
-        if (timer == null) {
-            timer = new Timer();
-            TimerTask tarefa = new TimerTask() {
-                public void run() {
-//                    while (true) {
-                    try {
-                        if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes() && pSEGUNDOS == new Date().getSeconds()) {
-                            pesquisar();
-                            System.out.println("Finalizado Agendador");
-                            pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-                            LOG_FINALIZADO();
-                        } else {
-                            System.out.println("População não lançada");
-                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
+//    public void Thread_HORARIO_POPULACAO() {
+//        // atualiza o site a cada 1 minuto 
+//        //****INICIA A TAREFA E VERIFICA A CADA UM MINUTO****
+//        Timer timer = null;
+//        if (timer == null) {
+//            timer = new Timer();
+//            TimerTask tarefa = new TimerTask() {
+//                public void run() {
+////                    while (true) {
+//                    try {
+//                        if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes() && pSEGUNDOS == new Date().getSeconds()) {
+//                            pesquisar();
+//                            System.out.println("Finalizado Agendador");
+//                            pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+//                            LOG_FINALIZADO();
+//                        } else {
+//                            System.out.println("População não lançada");
+//                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
+//                            LOG_ERROR();
+//                        }
+//                    } catch (Exception ERROR) {
+//                        ERROR.printStackTrace();
+//                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
+//                        LOG_ERROR();
+//                    }
+////                    }
+//                }
+//            };
+//            timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
+//        }
+//    }
+    public class Thread_GERAR_POPULACAO {
+
+        //INTERVALO DE TEMPO EM MILESEGUNDOS REFERENTE A 24 HORAS
+        public static final long TEMPO = (1000 * 60 * 60 * 20);
+
+        public void executa_ROBO() {
+            //definindo a hora qua a tarefa sera executada pela primeira vez
+            Calendar dataHoraInicio = Calendar.getInstance();
+            dataHoraInicio.set(Calendar.HOUR_OF_DAY, pHORAS);
+            dataHoraInicio.set(Calendar.MINUTE, pMINUTOS);
+            dataHoraInicio.set(Calendar.SECOND, pSEGUNDOS);
+
+            Timer timer = null;
+            if (timer == null) {
+                timer = new Timer();
+                TimerTask tarefa = new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (pHORAS == 24 && pMINUTOS == 1 && pSEGUNDOS == 0) {
+                                System.out.println("Començando...");
+                                pesquisar();
+                                // MINHA REGRA
+                                System.out.println("Fim.");
+                                pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+                                LOG_FINALIZADO();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
                             LOG_ERROR();
                         }
-                    } catch (Exception ERROR) {
-                        ERROR.printStackTrace();
-                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
-                        LOG_ERROR();
                     }
-//                    }
-                }
-            };
-            timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
+                };
+                timer.scheduleAtFixedRate(tarefa, dataHoraInicio.getTime(), TEMPO);
+            }
         }
     }
 }
