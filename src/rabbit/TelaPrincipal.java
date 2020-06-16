@@ -60,8 +60,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     String nameUser = "ADMINISTRADOR DO SISTEMA";
     //
     String pMENSAGEM_ERRO = "";
-    Date dataTeste = new Date();
-//    public static final long TEMPO = (1000 * 60);
+    Date pDATA_DIA_populacao = new Date();
 
     /**
      * Creates new form TelaPrincipal
@@ -78,10 +77,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
         //INICIO DO TESTE EM 15/06/2020
         Agendar_POPULACAO agenda = new Agendar_POPULACAO();
         agenda.executaTarefa();
-//        Thread_GERAR_POPULACAO GERAR_pop = new Thread_GERAR_POPULACAO();
-//        GERAR_pop.executa_ROBO();
-//        threadHoraPopulacao();
-//        Thread_HORARIO_POPULACAO();
         // Modificar a tecla tab por enter
         HashSet conj = new HashSet(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
@@ -108,12 +103,12 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jHoraSistema.setText(String.valueOf(hora));    // no lugar do label, por seu JTextField    
         jDataSistema.setText(String.valueOf(date));
         //     
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); //Impedir que a janela seja fechada pelo X    
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Impedir que a janela seja fechada pelo X    
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 if (e.getID() == WindowEvent.WINDOW_CLOSING) {
                     int selectedOption = JOptionPane.showConfirmDialog(null, "Deseja realmente sair do Sistema?", "Sistema informa:", JOptionPane.YES_NO_OPTION);
-                    if (selectedOption == JOptionPane.YES_OPTION) {
+                    if (selectedOption == JOptionPane.YES_NO_OPTION) {
                         System.exit(0);
                     }
                 }
@@ -143,8 +138,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         Date data = new Date();
         String hora = formatter.format(data);
         pSOMAR_DATA_populacao();
-//        objEntradaSaida.setDataMovimento(data);
-        objEntradaSaida.setDataMovimento(dataTeste);
+        objEntradaSaida.setDataMovimento(pDATA_DIA_populacao);
         objEntradaSaida.setHorarioMovimento(hora);
         objEntradaSaida.setTipoOperacao(tipoOperacao);
         objEntradaSaida.setPopulacao(objEntradaSaida.getPopulacao());
@@ -171,7 +165,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTempoExecucao = new javax.swing.JFormattedTextField();
+        jTempoExecucao = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -181,8 +175,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -193,6 +185,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTerminoOperacao = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("...::: Rabbit - População Alimentícia :::...");
@@ -203,12 +197,11 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("TEMPO DE EXECUÇÃO:");
 
-        jTempoExecucao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jTempoExecucao.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jTempoExecucao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTempoExecucao.setToolTipText("Tempo de execução da aplicação");
+        jTempoExecucao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         jTempoExecucao.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTempoExecucao.setEnabled(false);
-        jTempoExecucao.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,7 +221,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTempoExecucao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
@@ -255,8 +248,8 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jDataSistema)
                     .addComponent(jLabel3))
@@ -264,7 +257,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jHoraSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,20 +281,11 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel2.setText("informada no relatório para diretoria da empresa.");
+        jLabel2.setText("informada no relatório da diretoria da empresa.");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel5.setText("A execução está programada para as 23:59 hs da manhã todos");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel6.setText("os dias.            ");
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("**** VERSÃO: 1.0 - BETA TESTE ****");
+        jLabel5.setText("A execução está programada para as 23:59 hs todos os dias.");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -312,11 +296,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(23, 23, 23))
         );
         jPanel3Layout.setVerticalGroup(
@@ -328,11 +308,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addGap(2, 2, 2)
                 .addComponent(jLabel5)
-                .addGap(2, 2, 2)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel12))
-                .addGap(7, 7, 7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
@@ -375,7 +351,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Status da Operação", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 102, 0))); // NOI18N
@@ -396,10 +374,10 @@ public class TelaPrincipal extends javax.swing.JDialog {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jInicioOperacao)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel10)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jInicioOperacao))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -444,44 +422,72 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGap(10, 10, 10))
         );
 
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("VERSÃO: 15.062020-01/RSG");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addComponent(jLabel12)
+                .addGap(3, 3, 3))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(3, 3, 3)
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(3, 3, 3)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4))
+                .addGap(6, 6, 6))
         );
 
         pack();
@@ -542,7 +548,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -553,44 +558,12 @@ public class TelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JFormattedTextField jTempoExecucao;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JTextField jTempoExecucao;
     private javax.swing.JTextField jTerminoOperacao;
     // End of variables declaration//GEN-END:variables
 
-    //THREAD DE EXECUÇÃO DA TAREFA
-//    public void threadHoraPopulacao() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
-//        calendar.set(Calendar.MINUTE, pMINUTOS);
-//        calendar.set(Calendar.SECOND, pSEGUNDOS);
-//
-//        Date time = calendar.getTime();
-//
-//        final Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                //ADICIONADO O TRY CATH SOMENTE PARA TESTAR
-//                try {
-//                    if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
-//                        pesquisar();
-//                        timer.cancel();
-//                        System.out.println("Finalizado Agendador");
-//                        pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                        LOG_FINALIZADO();
-//                    } else {
-//                        System.out.println("População não lançada");
-//                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
-//                        LOG_ERROR();
-//                    }
-//                } catch (Exception ERROR) {
-//                    ERROR.printStackTrace();
-//                    pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
-//                    LOG_ERROR();
-//                }
-//            }
-//        }, time);
-//    }
+
     // COR DOS CAMPOS
     public void corCampos() {
         jDataSistema.setBackground(Color.white);
@@ -650,7 +623,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
         int hor = 0, min = 0, seg = 0;
         try {
             jTempoExecucao.setText("0" + hor + ":" + "0" + min + ":" + seg);
-//            System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
             for (hor = 0; hor >= 0; hor++) {
                 for (min = 0; min >= 0; min++) {
                     for (seg = 00; seg >= 0; seg++) {
@@ -664,7 +636,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
                         }
                         Thread.sleep(1000);
                         jTempoExecucao.setText("0" + hor + ":" + "0" + min + ":" + seg);
-//                        System.out.println("0" + hor + ":" + "0" + min + ":" + seg);
                     }
                 }
             }
@@ -673,83 +644,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
     }
 
-//    public void Thread_HORARIO_POPULACAO() {
-//        // atualiza o site a cada 1 minuto 
-//        //****INICIA A TAREFA E VERIFICA A CADA UM MINUTO****
-//        Timer timer = null;
-//        if (timer == null) {
-//            timer = new Timer();
-//            TimerTask tarefa = new TimerTask() {
-//                public void run() {
-////                    while (true) {
-//                    try {
-//                        if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes() && pSEGUNDOS == new Date().getSeconds()) {
-//                            pesquisar();
-//                            System.out.println("Finalizado Agendador");
-//                            pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                            LOG_FINALIZADO();
-//                        } else {
-//                            System.out.println("População não lançada");
-//                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
-//                            LOG_ERROR();
-//                        }
-//                    } catch (Exception ERROR) {
-//                        ERROR.printStackTrace();
-//                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
-//                        LOG_ERROR();
-//                    }
-////                    }
-//                }
-//            };
-//            timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
-//        }
-//    }
-    // FUNCIONOU COM USUÁRIO LOGADO EM 15/06/2020
-    //COMPILADO COM ESSA THREAD
-    // NO DIA SEGUINTE GEROU AS 20:01 - EM 15/06/2020
-//    public class Thread_GERAR_POPULACAO {
-//
-//        //INTERVALO DE TEMPO EM MILESEGUNDOS REFERENTE A 24 HORAS
-//        public static final long TEMPO = (1000 * 60 * 60 * 20);
-//
-//        public void executa_ROBO() {
-//            //definindo a hora qua a tarefa sera executada pela primeira vez
-//            Calendar dataHoraInicio = Calendar.getInstance();
-//            dataHoraInicio.set(Calendar.HOUR_OF_DAY, pHORAS);
-//            dataHoraInicio.set(Calendar.MINUTE, pMINUTOS);
-//            dataHoraInicio.set(Calendar.SECOND, pSEGUNDOS);
-//
-//            Timer timer = null;
-//            if (timer == null) {
-//                timer = new Timer();
-//                TimerTask tarefa = new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            if (pHORAS == 24 && pMINUTOS == 1 && pSEGUNDOS == 0) {
-//                                System.out.println("Començando...");
-//                                    pesquisar();
-//                                    // MINHA REGRA
-//                                    System.out.println("Fim.");
-//                                    pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                                    LOG_FINALIZADO();
-//                                }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
-//                            LOG_ERROR();
-//                        }
-//                    }
-//                };
-//                timer.scheduleAtFixedRate(tarefa, dataHoraInicio.getTime(), TEMPO);
-//            }
-//        }
-//    }
-    //OUTRO EXEMPLO DE AGENDAMENTO - AINDA NÃO FOI TESTADA.
+    //AGENDAMENTO DE POPULAÇÃO - RODANDO APARTIR DE 15/06/2020
     public class Agendar_POPULACAO {
-
         // NÃO USAR O CANCEL, POIS, CASO VENHA USAR, A TAREA SÓ SERÁ EXECUTADA UMA VEZ.
-        // FUNCIONOU LOCAL EM 15/06/2020 COM MAIS OU MENOS 20 MINUTOS DE EXECUÇÃO.
         private void executaTarefa() {
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, pHORAS);
@@ -771,10 +668,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
     }
 
     public void pSOMAR_DATA_populacao() {
-//        Date dataTeste = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(dataTeste);
+        cal.setTime(pDATA_DIA_populacao);
         cal.add(Calendar.DATE, 1);
-        dataTeste = cal.getTime();
+        pDATA_DIA_populacao = cal.getTime();
     }
 }
