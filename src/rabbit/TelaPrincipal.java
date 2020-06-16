@@ -54,12 +54,13 @@ public class TelaPrincipal extends javax.swing.JDialog {
     SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
     String tipoOperacao = "População";
     //HORÁRIO DE EXECUÇÃO
-    int pHORAS = 24;
-    int pMINUTOS = 1;
+    int pHORAS = 23;
+    int pMINUTOS = 59;
     int pSEGUNDOS = 0;
     String nameUser = "ADMINISTRADOR DO SISTEMA";
     //
     String pMENSAGEM_ERRO = "";
+    Date dataTeste = new Date();
 //    public static final long TEMPO = (1000 * 60);
 
     /**
@@ -74,8 +75,11 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         initComponents();
         corCampos();
-        Thread_GERAR_POPULACAO GERAR_pop = new Thread_GERAR_POPULACAO();
-        GERAR_pop.executa_ROBO();
+        //INICIO DO TESTE EM 15/06/2020
+        Agendar_POPULACAO agenda = new Agendar_POPULACAO();
+        agenda.executaTarefa();
+//        Thread_GERAR_POPULACAO GERAR_pop = new Thread_GERAR_POPULACAO();
+//        GERAR_pop.executa_ROBO();
 //        threadHoraPopulacao();
 //        Thread_HORARIO_POPULACAO();
         // Modificar a tecla tab por enter
@@ -138,7 +142,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
         listaRegistroES.selecionarRegistroEntrada(objEntradaSaida);
         Date data = new Date();
         String hora = formatter.format(data);
-        objEntradaSaida.setDataMovimento(data);
+        pSOMAR_DATA_populacao();
+//        objEntradaSaida.setDataMovimento(data);
+        objEntradaSaida.setDataMovimento(dataTeste);
         objEntradaSaida.setHorarioMovimento(hora);
         objEntradaSaida.setTipoOperacao(tipoOperacao);
         objEntradaSaida.setPopulacao(objEntradaSaida.getPopulacao());
@@ -176,6 +182,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -285,11 +292,16 @@ public class TelaPrincipal extends javax.swing.JDialog {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel5.setText("A execução está programada para as 00:01 hs da manhã todos");
+        jLabel5.setText("A execução está programada para as 23:59 hs da manhã todos");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
         jLabel6.setText("os dias.            ");
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("**** VERSÃO: 1.0 - BETA TESTE ****");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -301,7 +313,10 @@ public class TelaPrincipal extends javax.swing.JDialog {
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(23, 23, 23))
         );
         jPanel3Layout.setVerticalGroup(
@@ -314,7 +329,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 .addGap(2, 2, 2)
                 .addComponent(jLabel5)
                 .addGap(2, 2, 2)
-                .addComponent(jLabel6)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel12))
                 .addGap(7, 7, 7))
         );
 
@@ -520,6 +537,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -573,7 +591,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
 //            }
 //        }, time);
 //    }
-
     // COR DOS CAMPOS
     public void corCampos() {
         jDataSistema.setBackground(Color.white);
@@ -689,66 +706,75 @@ public class TelaPrincipal extends javax.swing.JDialog {
 //    }
     // FUNCIONOU COM USUÁRIO LOGADO EM 15/06/2020
     //COMPILADO COM ESSA THREAD
-    public class Thread_GERAR_POPULACAO {
+    // NO DIA SEGUINTE GEROU AS 20:01 - EM 15/06/2020
+//    public class Thread_GERAR_POPULACAO {
+//
+//        //INTERVALO DE TEMPO EM MILESEGUNDOS REFERENTE A 24 HORAS
+//        public static final long TEMPO = (1000 * 60 * 60 * 20);
+//
+//        public void executa_ROBO() {
+//            //definindo a hora qua a tarefa sera executada pela primeira vez
+//            Calendar dataHoraInicio = Calendar.getInstance();
+//            dataHoraInicio.set(Calendar.HOUR_OF_DAY, pHORAS);
+//            dataHoraInicio.set(Calendar.MINUTE, pMINUTOS);
+//            dataHoraInicio.set(Calendar.SECOND, pSEGUNDOS);
+//
+//            Timer timer = null;
+//            if (timer == null) {
+//                timer = new Timer();
+//                TimerTask tarefa = new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            if (pHORAS == 24 && pMINUTOS == 1 && pSEGUNDOS == 0) {
+//                                System.out.println("Començando...");
+//                                    pesquisar();
+//                                    // MINHA REGRA
+//                                    System.out.println("Fim.");
+//                                    pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+//                                    LOG_FINALIZADO();
+//                                }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
+//                            LOG_ERROR();
+//                        }
+//                    }
+//                };
+//                timer.scheduleAtFixedRate(tarefa, dataHoraInicio.getTime(), TEMPO);
+//            }
+//        }
+//    }
+    //OUTRO EXEMPLO DE AGENDAMENTO - AINDA NÃO FOI TESTADA.
+    public class Agendar_POPULACAO {
 
-        //INTERVALO DE TEMPO EM MILESEGUNDOS REFERENTE A 24 HORAS
-        public static final long TEMPO = (1000 * 60 * 60 * 20);
+        // NÃO USAR O CANCEL, POIS, CASO VENHA USAR, A TAREA SÓ SERÁ EXECUTADA UMA VEZ.
+        // FUNCIONOU LOCAL EM 15/06/2020 COM MAIS OU MENOS 20 MINUTOS DE EXECUÇÃO.
+        private void executaTarefa() {
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, pHORAS);
+            c.set(Calendar.MINUTE, pMINUTOS);
+            c.set(Calendar.SECOND, pSEGUNDOS);
 
-        public void executa_ROBO() {
-            //definindo a hora qua a tarefa sera executada pela primeira vez
-            Calendar dataHoraInicio = Calendar.getInstance();
-            dataHoraInicio.set(Calendar.HOUR_OF_DAY, pHORAS);
-            dataHoraInicio.set(Calendar.MINUTE, pMINUTOS);
-            dataHoraInicio.set(Calendar.SECOND, pSEGUNDOS);
+            Date time = c.getTime();
 
-            Timer timer = null;
-            if (timer == null) {
-                timer = new Timer();
-                TimerTask tarefa = new TimerTask() {
-                    @Override
-                    public void run() {
-                        try {
-                            if (pHORAS == 24 && pMINUTOS == 1 && pSEGUNDOS == 0) {
-                                System.out.println("Començando...");
-                                pesquisar();
-                                // MINHA REGRA
-                                System.out.println("Fim.");
-                                pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-                                LOG_FINALIZADO();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
-                            LOG_ERROR();
-                        }
-                    }
-                };
-                timer.scheduleAtFixedRate(tarefa, dataHoraInicio.getTime(), TEMPO);
-            }
+            final Timer t = new Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    pesquisar();
+                    pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+                    LOG_FINALIZADO();
+                }
+            }, time);
         }
     }
 
-    //OUTRO EXEMPLO DE AGENDAMENTO - AINDA NÃO FOI TESTADA.
-//    public class Agendar_POPULACAO {
-//        // NÃO USAR O CANCEL, POIS, CASO VENHA USAR, A TAREA SÓ SERÁ EXECUTADA UMA VEZ.
-//        // FUNCIONOU LOCAL EM 15/06/2020 COM MAIS OU MENOS 20 MINUTOS DE EXECUÇÃO.
-//        private void executaTarefa() {
-//            Calendar c = Calendar.getInstance();
-//            c.set(Calendar.HOUR_OF_DAY, pHORAS);
-//            c.set(Calendar.MINUTE, pMINUTOS);
-//            c.set(Calendar.SECOND, pSEGUNDOS);
-//
-//            Date time = c.getTime();
-//
-//            final Timer t = new Timer();
-//            t.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    pesquisar();
-//                    pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                    LOG_FINALIZADO();
-//                }
-//            }, time);
-//        }
-//    }
+    public void pSOMAR_DATA_populacao() {
+//        Date dataTeste = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dataTeste);
+        cal.add(Calendar.DATE, 1);
+        dataTeste = cal.getTime();
+    }
 }
