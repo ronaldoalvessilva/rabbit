@@ -105,17 +105,17 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jHoraSistema.setText(String.valueOf(hora));    // no lugar do label, por seu JTextField    
         jDataSistema.setText(String.valueOf(date));
         //     
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Impedir que a janela seja fechada pelo X    
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-                    int selectedOption = JOptionPane.showConfirmDialog(null, "Deseja realmente sair do Sistema?", "Sistema informa:", JOptionPane.YES_NO_OPTION);
-                    if (selectedOption == JOptionPane.YES_NO_OPTION) {
-                        System.exit(0);
-                    }
-                }
-            }
-        });
+//        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Impedir que a janela seja fechada pelo X    
+//        addWindowListener(new java.awt.event.WindowAdapter() {
+//            public void windowClosing(java.awt.event.WindowEvent e) {
+//                if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+//                    int selectedOption = JOptionPane.showConfirmDialog(null, "Deseja realmente sair do Sistema?", "Sistema informa:", JOptionPane.YES_NO_OPTION);
+//                    if (selectedOption == JOptionPane.YES_OPTION) {
+//                        System.exit(0);
+//                    }
+//                }
+//            }
+//        });
     }
 
     public void rodaRelogio() {
@@ -197,7 +197,6 @@ public class TelaPrincipal extends javax.swing.JDialog {
         jPanel11 = new javax.swing.JPanel();
         jTempoExecucao = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("...::: Rabbit - População Alimentícia :::...");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
