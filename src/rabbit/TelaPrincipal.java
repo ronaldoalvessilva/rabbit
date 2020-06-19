@@ -16,7 +16,6 @@ import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -29,8 +28,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -103,19 +100,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         String hora = formatter.format(data); // Data da conexão
         String date = formatter2.format(data); // Hora da conexão
         jHoraSistema.setText(String.valueOf(hora));    // no lugar do label, por seu JTextField    
-        jDataSistema.setText(String.valueOf(date));
-        //     
-//        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Impedir que a janela seja fechada pelo X    
-//        addWindowListener(new java.awt.event.WindowAdapter() {
-//            public void windowClosing(java.awt.event.WindowEvent e) {
-//                if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-//                    int selectedOption = JOptionPane.showConfirmDialog(null, "Deseja realmente sair do Sistema?", "Sistema informa:", JOptionPane.YES_NO_OPTION);
-//                    if (selectedOption == JOptionPane.YES_OPTION) {
-//                        System.exit(0);
-//                    }
-//                }
-//            }
-//        });
+        jDataSistema.setText(String.valueOf(date));        
     }
 
     public void rodaRelogio() {
