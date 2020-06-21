@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rabbit;
+
 
 import Dao.ControleEntradasSaidasPopulacaoInternos;
 import Dao.ConversaoDatasAtividadesUnidades;
@@ -36,7 +36,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author ronal
  */
-public class TelaPrincipal extends javax.swing.JDialog {
+public class TelaPrincipal_OLD extends javax.swing.JDialog {
 
     ConexaoBancoDados conecta = new ConexaoBancoDados();
     ControleEntradasSaidasPopulacaoInternos populacao = new ControleEntradasSaidasPopulacaoInternos();
@@ -62,9 +62,9 @@ public class TelaPrincipal extends javax.swing.JDialog {
     /**
      * Creates new form TelaPrincipal
      */
-    public static TelaPrincipal pTELA_principal;
+    public static TelaPrincipal_OLD pTELA_principal;
 
-    public TelaPrincipal(java.awt.Frame parent, boolean modal) {
+    public TelaPrincipal_OLD(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -592,20 +592,21 @@ public class TelaPrincipal extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaPrincipal dialog = new TelaPrincipal(new javax.swing.JFrame(), true);
+                TelaPrincipal_OLD dialog = new TelaPrincipal_OLD(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -671,7 +672,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
             arq.println(jTerminoOperacao.getText());
             arq.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -682,7 +683,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
             arq.println(pMENSAGEM_ERRO);
             arq.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -693,7 +694,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
             arq.println(pMENSAGEM_ERRO);
             arq.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaPrincipal_OLD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
