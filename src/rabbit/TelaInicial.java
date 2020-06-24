@@ -60,7 +60,9 @@ public class TelaInicial extends javax.swing.JFrame {
     //
     String pMENSAGEM_ERRO = "";
     Date pDATA_DIA_populacao = new Date();
-    int tempo = (int) ((1000 * 60) * 0.5);   // 1 min.  
+//    int tempo = (int) ((1000 * 60) * 0.5);   // 1/2 min.  
+    int tempo = (int) (1000 * 60 * 1);   // 1 min.
+//    int tempo = (int) (1000 * 60 * 2);   // 2 min.
     int periodo = 1;  // quantidade de vezes a ser executado.  
     int conta = 0;
 
@@ -723,49 +725,7 @@ public class TelaInicial extends javax.swing.JFrame {
         }
     }
 
-    //AGENDAMENTO DE POPULAÇÃO - RODANDO APARTIR DE 15/06/2020
-    public class Agendar_POPULACAO {
-
-        // NÃO USAR O CANCEL, POIS, CASO VENHA USAR, A TAREA SÓ SERÁ EXECUTADA UMA VEZ.
-        private void executaTarefa() {
-            ler_HORARIO_AGENDA();
-            pHORAS = Integer.parseInt(jHoras.getText());
-            pMINUTOS = Integer.parseInt(jMinutos.getText());
-            pSEGUNDOS = Integer.parseInt(jSegundos.getText());
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, pHORAS);
-            c.set(Calendar.MINUTE, pMINUTOS);
-            c.set(Calendar.SECOND, pSEGUNDOS);
-
-            Date time = c.getTime();
-
-            final Timer t = new Timer();
-            t.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        pesquisar();
-                        pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-                        LOG_FINALIZADO();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        pMENSAGEM_ERRO = "Não foi possível gerar a população ERROR: " + e;
-                        LOG_ERROR();
-                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
-                        LOG_ERROR();
-                    }
-                }
-            }, time);
-        }
-    }
-
-    public void pSOMAR_DATA_populacao() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(pDATA_DIA_populacao);
-        cal.add(Calendar.DATE, 1);
-        pDATA_DIA_populacao = cal.getTime();
-    }
-
+    //NOVO MÉTODO PARA AGENDAMENTO DA POPULAÇÃO EM 24/06/2020 - TESTE
     public void THREAD_VERIFICA_horario() {
         final Timer timer = new Timer();
 
@@ -787,17 +747,71 @@ public class TelaInicial extends javax.swing.JFrame {
                 pHORAS = Integer.parseInt(jHoras.getText());
                 pMINUTOS = Integer.parseInt(jMinutos.getText());
                 pSEGUNDOS = Integer.parseInt(jSegundos.getText());
+                //INSTÂNCIA O A HORA, MINUTOS E SEGUNDOS COM A CLASSE CALENDAR
                 Calendar c = Calendar.getInstance();
                 c.set(Calendar.HOUR_OF_DAY, pHORAS);
                 c.set(Calendar.MINUTE, pMINUTOS);
                 c.set(Calendar.SECOND, pSEGUNDOS);
                 //ACRESENTEI ESSA COMPARAÇÃO AQUI (24/06/2020) AS 12:31HS.
                 if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
-                    new Agendar_POPULACAO().executaTarefa();
+                    try {
+                        pesquisar();
+                        pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+                        LOG_FINALIZADO();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        pMENSAGEM_ERRO = "Não foi possível gerar a população ERROR: " + e;
+                        LOG_ERROR();
+                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
+                        LOG_ERROR();
+                    }
                 }
             }
         }, periodo, tempo);
     }
+
+    public void pSOMAR_DATA_populacao() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(pDATA_DIA_populacao);
+        cal.add(Calendar.DATE, 1);
+        pDATA_DIA_populacao = cal.getTime();
+    }
+
+    //AGENDAMENTO DE POPULAÇÃO - RODANDO APARTIR DE 15/06/2020
+//    public class Agendar_POPULACAO {
+//
+//        // NÃO USAR O CANCEL, POIS, CASO VENHA USAR, A TAREA SÓ SERÁ EXECUTADA UMA VEZ.
+//        private void executaTarefa() {
+//            ler_HORARIO_AGENDA();
+//            pHORAS = Integer.parseInt(jHoras.getText());
+//            pMINUTOS = Integer.parseInt(jMinutos.getText());
+//            pSEGUNDOS = Integer.parseInt(jSegundos.getText());
+//            Calendar c = Calendar.getInstance();
+//            c.set(Calendar.HOUR_OF_DAY, pHORAS);
+//            c.set(Calendar.MINUTE, pMINUTOS);
+//            c.set(Calendar.SECOND, pSEGUNDOS);
+//
+//            Date time = c.getTime();
+//
+//            final Timer t = new Timer();
+//            t.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        pesquisar();
+//                        pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+//                        LOG_FINALIZADO();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        pMENSAGEM_ERRO = "Não foi possível gerar a população ERROR: " + e;
+//                        LOG_ERROR();
+//                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
+//                        LOG_ERROR();
+//                    }
+//                }
+//            }, time);
+//        }
+//    }
 
     //THREAD DE EXECUÇÃO DA TAREFA
 //    public void threadHoraPopulacao() {
