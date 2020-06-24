@@ -203,7 +203,7 @@
               <Color blue="cc" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="VERS&#xc3;O: 15.062020-05/RSG"/>
+            <Property name="text" type="java.lang.String" value="VERS&#xc3;O: 15.062020-06/RSG - BETA TESTE"/>
           </Properties>
         </Component>
       </SubComponents>

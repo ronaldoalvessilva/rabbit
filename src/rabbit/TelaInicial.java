@@ -245,7 +245,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 204));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("VERSÃO: 15.062020-05/RSG");
+        jLabel12.setText("VERSÃO: 15.062020-06/RSG - BETA TESTE");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
