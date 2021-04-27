@@ -7,11 +7,13 @@ package rabbit;
 
 import Dao.ControleEntradasSaidasPopulacaoInternos;
 import Dao.ConversaoDatasAtividadesUnidades;
+import Dao.GerarPopulacaoNominalAutomatica;
 import Dao.ListagemRegistroEntradaSaidaPopulcao;
 import Dao.ListagemUltimaPopulacaoCRC;
 import Factory.ConexaoBancoDados;
 import Modelo.AtividadesMensalRealizadaUnidades;
 import Modelo.EntradaSaidasPolucaoInternos;
+import Modelo.GerarPopNominal;
 import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.KeyboardFocusManager;
@@ -21,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +51,9 @@ public class TelaInicial extends javax.swing.JFrame {
     ListagemRegistroEntradaSaidaPopulcao listaRegistroES = new ListagemRegistroEntradaSaidaPopulcao();
     ConversaoDatasAtividadesUnidades converteData = new ConversaoDatasAtividadesUnidades();
     AtividadesMensalRealizadaUnidades objAtividade = new AtividadesMensalRealizadaUnidades();
+    //GERAR POPULAÇÃO CARCERÁRIA AUTOMÁTICAMENTE - TODOS OS DIAS 
+    GerarPopulacaoNominalAutomatica GERAR = new GerarPopulacaoNominalAutomatica();
+    GerarPopNominal objPopNom = new GerarPopNominal();
     //
     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss"); // HORAIO DE 24 HORAS, PARA O DE 12 HORAS UTILIZAR hh:mm:ss
     SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
@@ -60,12 +66,20 @@ public class TelaInicial extends javax.swing.JFrame {
     //
     String pMENSAGEM_ERRO = "";
     Date pDATA_DIA_populacao = new Date();
-//    int tempo = (int) ((1000 * 60) * 0.5);   // 1/2 min.  
     int tempo = (int) (1000 * 60 * 1);   // 1 min.
-//    int tempo = (int) (1000 * 60 * 2);   // 2 min.
     int periodo = 1;  // quantidade de vezes a ser executado.  
     int conta = 0;
+    //POPULAÇÃO CARCERÁRIA
+    public static int pTOTAL_internos = 0;
+    int pTOTAL_REGISTROS_PRO = 0;
+    String pDATA_DIA_POPULACAP_carceraria;
+    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    Date dataFormatada;
+    //FECHAR SISTEMA AUTOMÁTICAMENTE
+    
 
+    //    int tempo = (int) ((1000 * 60) * 0.5);   // 1/2 min.  
+    //    int tempo = (int) (1000 * 60 * 2);   // 2 min.
     /**
      * Creates new form TelaInicial
      */
@@ -78,8 +92,6 @@ public class TelaInicial extends javax.swing.JFrame {
         }
         corCampos();
         //INICIO DO TESTE EM 15/06/2020               
-//        Agendar_POPULACAO agenda = new Agendar_POPULACAO();
-//        agenda.executaTarefa();
         //THREAD PARA VERIFICAR O ARQUIVO E O AGENDAMENTO.
         THREAD_VERIFICA_horario();
         // Modificar a tecla tab por enter
@@ -192,6 +204,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jTotalRegistros = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -431,7 +444,15 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 102, 0));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("HORÁRIO AGENDAMENTO");
+        jLabel6.setText("Total de Registros Processados:");
+
+        jTotalRegistros.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jTotalRegistros.setForeground(new java.awt.Color(204, 0, 0));
+        jTotalRegistros.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTotalRegistros.setText("0");
+        jTotalRegistros.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jTotalRegistros.setDisabledTextColor(new java.awt.Color(204, 0, 0));
+        jTotalRegistros.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -439,14 +460,18 @@ public class TelaInicial extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -483,7 +508,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jHoraSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -641,6 +666,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jSegundos;
     private javax.swing.JTextField jTempoExecucao;
     private javax.swing.JTextField jTerminoOperacao;
+    private javax.swing.JTextField jTotalRegistros;
     // End of variables declaration//GEN-END:variables
 
     // COR DOS CAMPOS
@@ -653,6 +679,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jHoras.setBackground(Color.white);
         jMinutos.setBackground(Color.white);
         jSegundos.setBackground(Color.white);
+        jTotalRegistros.setBackground(Color.white);
     }
 
     //GRAVAR LOG DO ROBÔ
@@ -759,6 +786,11 @@ public class TelaInicial extends javax.swing.JFrame {
                     try {
                         pesquisar();
                         pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
+                        VERIFICAR_parametro();
+                        if (objPopNom.getParametroPop().equals("Sim")) {
+                            GERAR_POPULACAO_carceraria();
+                            pMENSAGEM_ERRO = "Gerando população Carcerária, Aguarde...";
+                        }                      
                         LOG_FINALIZADO();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -779,6 +811,49 @@ public class TelaInicial extends javax.swing.JFrame {
         pDATA_DIA_populacao = cal.getTime();
     }
 
+    public void pSOMAR_DATA_POPULACAO_carceraria() {
+        try {
+            pDATA_DIA_POPULACAP_carceraria = jDataSistema.getText();
+            dataFormatada = formato.parse(pDATA_DIA_POPULACAP_carceraria);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dataFormatada);
+            cal.add(Calendar.DATE, 1);
+            dataFormatada = cal.getTime();
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void GERAR_POPULACAO_carceraria() {
+        System.out.println("Gerando População Carcerária, Aguarde...");
+        jTotalRegistros.setText("0");
+        jInicioOperacao.setText("Gerando População Carcerária, Aguarde...");
+        jTerminoOperacao.setText("");
+        pSOMAR_DATA_POPULACAO_carceraria();
+        try {
+            for (GerarPopNominal pp : GERAR.PESQUISAR_INTERNOS_read()) {
+                objPopNom.setIdInternoCrc(pp.getIdInternoCrc());
+                objPopNom.setDataPopulcao(dataFormatada);
+                GERAR.incluirPopulacaoNominal(objPopNom);
+                pTOTAL_REGISTROS_PRO++;
+                jTotalRegistros.setText(String.valueOf(pTOTAL_REGISTROS_PRO));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (pTOTAL_REGISTROS_PRO == pTOTAL_internos) {
+            jTerminoOperacao.setText("População gerada com sucesso em: " + jDataSistema.getText() + " as: " + jHoraSistema.getText());
+        }
+        System.out.println("População Carcerária foi gerada com sucesso.");
+    }
+
+    public void VERIFICAR_parametro() {
+        GERAR.VERIFICAR_parametro(objPopNom);
+        objPopNom.getParametroPop();
+    }
+    
+    
+    
     //AGENDAMENTO DE POPULAÇÃO - RODANDO APARTIR DE 15/06/2020
 //    public class Agendar_POPULACAO {
 //
