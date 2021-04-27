@@ -17,6 +17,7 @@ import Modelo.GerarPopNominal;
 import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -32,6 +33,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -75,8 +77,6 @@ public class TelaInicial extends javax.swing.JFrame {
     String pDATA_DIA_POPULACAP_carceraria;
     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     Date dataFormatada;
-    //FECHAR SISTEMA AUTOMÁTICAMENTE
-    
 
     //    int tempo = (int) ((1000 * 60) * 0.5);   // 1/2 min.  
     //    int tempo = (int) (1000 * 60 * 2);   // 2 min.
@@ -85,6 +85,7 @@ public class TelaInicial extends javax.swing.JFrame {
      */
     public TelaInicial() {
         initComponents();
+        setIcon();
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
             SwingUtilities.updateComponentTreeUI(this);
@@ -214,7 +215,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("...::: Rabbit - População Alimentícia :::...");
+        setTitle("...::: Rabbit - Pop. Alimentícia/Carcerária :::...");
         setResizable(false);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
@@ -260,7 +261,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 204));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("VERSÃO: 15.062020-07/RSG - FINAL");
+        jLabel12.setText("VERSÃO: 27.042021-07/RSG - FINAL");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -450,6 +451,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jTotalRegistros.setForeground(new java.awt.Color(204, 0, 0));
         jTotalRegistros.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTotalRegistros.setText("0");
+        jTotalRegistros.setToolTipText("Total de Registros da População Carcerária");
         jTotalRegistros.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         jTotalRegistros.setDisabledTextColor(new java.awt.Color(204, 0, 0));
         jTotalRegistros.setEnabled(false);
@@ -790,7 +792,7 @@ public class TelaInicial extends javax.swing.JFrame {
                         if (objPopNom.getParametroPop().equals("Sim")) {
                             GERAR_POPULACAO_carceraria();
                             pMENSAGEM_ERRO = "Gerando população Carcerária, Aguarde...";
-                        }                      
+                        }
                         LOG_FINALIZADO();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -851,115 +853,8 @@ public class TelaInicial extends javax.swing.JFrame {
         GERAR.VERIFICAR_parametro(objPopNom);
         objPopNom.getParametroPop();
     }
-    
-    
-    
-    //AGENDAMENTO DE POPULAÇÃO - RODANDO APARTIR DE 15/06/2020
-//    public class Agendar_POPULACAO {
-//
-//        // NÃO USAR O CANCEL, POIS, CASO VENHA USAR, A TAREA SÓ SERÁ EXECUTADA UMA VEZ.
-//        private void executaTarefa() {
-//            ler_HORARIO_AGENDA();
-//            pHORAS = Integer.parseInt(jHoras.getText());
-//            pMINUTOS = Integer.parseInt(jMinutos.getText());
-//            pSEGUNDOS = Integer.parseInt(jSegundos.getText());
-//            Calendar c = Calendar.getInstance();
-//            c.set(Calendar.HOUR_OF_DAY, pHORAS);
-//            c.set(Calendar.MINUTE, pMINUTOS);
-//            c.set(Calendar.SECOND, pSEGUNDOS);
-//
-//            Date time = c.getTime();
-//
-//            final Timer t = new Timer();
-//            t.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        pesquisar();
-//                        pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                        LOG_FINALIZADO();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        pMENSAGEM_ERRO = "Não foi possível gerar a população ERROR: " + e;
-//                        LOG_ERROR();
-//                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
-//                        LOG_ERROR();
-//                    }
-//                }
-//            }, time);
-//        }
-//    }
 
-    //THREAD DE EXECUÇÃO DA TAREFA
-//    public void threadHoraPopulacao() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, pHORAS);
-//        calendar.set(Calendar.MINUTE, pMINUTOS);
-//        calendar.set(Calendar.SECOND, pSEGUNDOS);
-//
-//        Date time = calendar.getTime();
-//
-//        final Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                //ADICIONADO O TRY CATH SOMENTE PARA TESTAR
-//                try {
-//                    if (pHORAS == new Date().getHours() && pMINUTOS == new Date().getMinutes()) {
-//                        pesquisar();
-//                        timer.cancel();
-//                        System.out.println("Finalizado Agendador");
-//                        pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                        LOG_FINALIZADO();
-//                    } else {
-//                        System.out.println("População não lançada");
-//                        pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText();
-//                        LOG_ERROR();
-//                    }
-//                } catch (Exception ERROR) {
-//                    ERROR.printStackTrace();
-//                    pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + ERROR;
-//                    LOG_ERROR();
-//                }
-//            }
-//        }, time);
-//    }
-//    public class Thread_GERAR_POPULACAO {
-//
-//        //INTERVALO DE TEMPO EM MILESEGUNDOS REFERENTE A 24 HORAS
-//        public static final long TEMPO = (1000 * 60 * 60 * 20);
-//
-//        public void executa_ROBO() {
-//            //definindo a hora qua a tarefa sera executada pela primeira vez
-//            Calendar dataHoraInicio = Calendar.getInstance();
-//            dataHoraInicio.set(Calendar.HOUR_OF_DAY, pHORAS);
-//            dataHoraInicio.set(Calendar.MINUTE, pMINUTOS);
-//            dataHoraInicio.set(Calendar.SECOND, pSEGUNDOS);
-//
-//            Timer timer = null;
-//            if (timer == null) {
-//                timer = new Timer();
-//                TimerTask tarefa = new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            if (dataHoraInicio.get(Calendar.HOUR_OF_DAY) == pHORAS && dataHoraInicio.get(Calendar.MINUTE) == pMINUTOS && dataHoraInicio.get(Calendar.SECOND) == pSEGUNDOS) {
-//                                System.out.println("Començando...");
-//                                pesquisar();
-//                                // MINHA REGRA
-//                                System.out.println("Fim.");
-//                                pMENSAGEM_ERRO = "Agendador finalizado com sucesso na data : " + jDataSistema.getText() + " e hora: " + jHoraSistema.getText();
-//                                LOG_FINALIZADO();
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                            pMENSAGEM_ERRO = "Não foi possível gerar a população na data de: " + jDataSistema.getText() + " as: " + jHoraSistema.getText() + "\n" + e;
-//                            LOG_ERROR();
-//                        }
-//                    }
-//                };
-//                timer.scheduleAtFixedRate(tarefa, dataHoraInicio.getTime(), TEMPO);
-//            }
-//        }
-//    }
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagem/robot-screen-settings-icon.png")));
+    }
 }
